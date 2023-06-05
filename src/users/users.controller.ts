@@ -13,21 +13,19 @@ export class UsersController {
     ) {
     }
 
-
     @UseGuards(AuthGuard(), RolesGuard)
     @Level(UserLevel.ADMIN)
     @Get('admin')
-    async testAdmin(@Request() req){
-        return this.usersService.getUser()
+    async testAdmin(){
+        return this.usersService.getUsers()
     }
 
     @UseGuards(AuthGuard(), RolesGuard)
     @Level(UserLevel.USER)
     @Get('user')
-    async testUser(@Request() req){
-        return this.usersService.getUser()
+    async testUser(){
+        return this.usersService.getUsers()
     }
-
 
     @Post('login')
     async create(
@@ -36,7 +34,6 @@ export class UsersController {
     ) {
         return await this.usersService.login(userData)
     }
-
 
     @Post('register')
     async register(
@@ -53,8 +50,6 @@ export class UsersController {
     ) {
        return  req.user
     }
-
-
 
 
 }

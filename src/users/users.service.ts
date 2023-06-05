@@ -1,11 +1,10 @@
-import {ForbiddenException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException} from '@nestjs/common';
+import {ForbiddenException, Injectable, InternalServerErrorException, UnauthorizedException} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {UsersEntity} from "./users.entity";
 import {LoginDto} from "./dto/login.dto";
 import { Repository } from 'typeorm';
 import {JwtService} from "@nestjs/jwt";
 import { RegisterDto } from './dto/register.dto';
-import * as bcrypt from 'bcrypt';
 
 
 @Injectable()
@@ -18,6 +17,7 @@ export class UsersService {
         private readonly jwtService:JwtService
     ) {
     }
+
     async makeToken(user: UsersEntity) {
         const payload = {
             id: user.id,
@@ -30,7 +30,8 @@ export class UsersService {
             ...payload
         }
     }
-    async getUser(){
+
+    async getUsers(){
         try {
             const user = this.userRepository.find()
             if (!user){
@@ -42,25 +43,21 @@ export class UsersService {
         }
     }
 
-
-
     async login(data: LoginDto) {
         try {
-            const user = await this.userRepository.findOne({
+           const user= await this.userRepository.findOneOrFail({
                 where: {
                     username: data.username,
                     password: data.password
                 }
             })
-            if (!user)
-                throw 'invalid username or password!'
-            else {
+
                 return this.makeToken(user)
-            }
         } catch (error) {
             throw new UnauthorizedException(error.message || error)
         }
     }
+
     async register(registerData: RegisterDto) {
         try {
             const users = await this.userRepository.findOne({
@@ -89,12 +86,6 @@ export class UsersService {
         } catch (error) {
             throw new UnauthorizedException(error.message || error)
         }
-    }
-
-    async hashedPass(password:string){
-        const pass:string = await bcrypt.hash(password,10)
-
-        return pass
     }
 
 
