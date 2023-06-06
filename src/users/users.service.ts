@@ -5,7 +5,7 @@ import {LoginDto} from "./dto/login.dto";
 import { Repository } from 'typeorm';
 import {JwtService} from "@nestjs/jwt";
 import { RegisterDto } from './dto/register.dto';
-
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class UsersService {
@@ -20,7 +20,7 @@ export class UsersService {
 
     async makeToken(user: UsersEntity) {
         const payload = {
-            id: user.id,
+            uuid: user.uuid,
             username: user.username,
             level: user.level
         }
@@ -68,7 +68,8 @@ export class UsersService {
             if (users) {
                 throw 'Username is already exist'
             } else {
-                const user = await this.userRepository.save(registerData.toEntity());
+                const user = await this.userRepository.save( registerData.toEntity());
+
                 return registerData;
             }
 
@@ -77,9 +78,9 @@ export class UsersService {
         }
     }
 
-    async tokenUUIDcontrol(id: number) {
+    async tokenUUIDcontrol(uuid: number) {
         try {
-            const user = await this.userRepository.findOne({ where: { id } })
+            const user = await this.userRepository.findOne({ where: { uuid } })
             if (!user)
                 throw 'invalid user!'
             return this.makeToken(user)
@@ -87,7 +88,6 @@ export class UsersService {
             throw new UnauthorizedException(error.message || error)
         }
     }
-
 
 
 }

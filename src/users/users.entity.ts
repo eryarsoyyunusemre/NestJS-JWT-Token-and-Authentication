@@ -1,12 +1,12 @@
 import { BaseEntity, BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import {UserLevel} from "./users.enum";
-
+import * as bcrypt from 'bcrypt'
 
 
 @Entity('deneme')
 export class UsersEntity extends BaseEntity{
     @PrimaryGeneratedColumn()
-    id:number;
+    uuid:number;
 
     @Column({type:'varchar',length:50})
     username:string;
@@ -16,8 +16,5 @@ export class UsersEntity extends BaseEntity{
 
     @Column({type:'varchar',comment:'User level',default:UserLevel.USER})
     level:UserLevel
-
-
-
 
 }

@@ -1,6 +1,7 @@
 import {IsOptional, IsString} from "class-validator";
 import {UsersEntity} from "../users.entity";
 import {UserLevel} from "../users.enum";
+import * as bcrypt from "bcrypt";
 
 export class RegisterDto {
 
@@ -14,15 +15,17 @@ export class RegisterDto {
     @IsOptional()
     level:UserLevel
 
-    toEntity() {
+     toEntity() {
 
         const entity = new UsersEntity();
         entity.username = this.username;
-        entity.password = this.password;
+
+        entity.password = this.password
         entity.level = this.level
 
         return entity;
     }
+
 
 
 }
