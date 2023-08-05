@@ -1,7 +1,6 @@
 import {IsOptional, IsString} from "class-validator";
 import {UsersEntity} from "../users.entity";
 import {UserLevel} from "../users.enum";
-import * as bcrypt from "bcrypt";
 
 export class RegisterDto {
 

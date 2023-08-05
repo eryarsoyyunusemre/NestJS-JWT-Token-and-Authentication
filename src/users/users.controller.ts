@@ -6,6 +6,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/core/guards';
 import { UserLevel } from './users.enum';
 import { Level } from 'src/core/decorator';
+
 @Controller('users')
 export class UsersController {
     constructor(
@@ -45,7 +46,7 @@ export class UsersController {
 
     @UseGuards(AuthGuard('jwt'))
     @Get('decodeToken')
-    async refreshToken(
+    async decodeToken(
         @Request() req
     ) {
        return  req.user

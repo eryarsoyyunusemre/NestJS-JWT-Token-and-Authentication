@@ -1,6 +1,6 @@
-import { BaseEntity, BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity,  Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import {UserLevel} from "./users.enum";
-import * as bcrypt from 'bcrypt'
+
 
 
 @Entity('deneme')
